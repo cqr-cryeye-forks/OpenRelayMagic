@@ -36,15 +36,8 @@ def checker(hostname):
 			port = 465
 			server = smtplib.SMTP_SSL(hostname, port)
 		except Exception as e:
-			print(f'Error trying to use port 465: {e}')
 			port = 587
 			server = smtplib.SMTP(hostname, port)
-		# 		if args.port == 465:
-		# 			port = 465
-		# 			server = smtplib.SMTP_SSL(hostname, port)
-		# 		else:
-		# 			port = 587
-		# 			server = smtplib.SMTP(hostname, port)
 		server.helo()
 		text = msg.as_string()
 		server.sendmail(sender, receiver, text)
