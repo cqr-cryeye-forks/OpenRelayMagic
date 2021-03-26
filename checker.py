@@ -4,7 +4,7 @@ import socket
 import smtplib
 import random, string
 import argparse
-from tqdm import *
+from tqdm import tqdm
 from multiprocessing import Pool
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -32,12 +32,19 @@ def checker(hostname):
 		msg['To'] = receiver
 		msg['Subject'] = subject
 		msg.attach(MIMEText(messageHTML, 'html'))
-		if args.port == 465:
+		try:
 			port = 465
 			server = smtplib.SMTP_SSL(hostname, port)
-		else:
+		except Exception as e:
+			print(f'Error trying to use port 465: {e}')
 			port = 587
 			server = smtplib.SMTP(hostname, port)
+		# 		if args.port == 465:
+		# 			port = 465
+		# 			server = smtplib.SMTP_SSL(hostname, port)
+		# 		else:
+		# 			port = 587
+		# 			server = smtplib.SMTP(hostname, port)
 		server.helo()
 		text = msg.as_string()
 		server.sendmail(sender, receiver, text)
